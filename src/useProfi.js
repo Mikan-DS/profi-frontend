@@ -19,7 +19,8 @@ export default function useProfi(){
     }
 
     return {
-        configs
+        configs,
+        colors
     }
 
 }
