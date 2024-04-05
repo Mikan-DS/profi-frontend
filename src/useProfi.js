@@ -11,6 +11,13 @@ export default function useProfi(){
         configs.backend_url += "/"
     }
 
+
+    const colors = {
+        primaryColor: "#076ADD",
+        secondaryColor: "#0193F8",
+        accentColor: "#FFFFFF"
+    }
+
     return {
         configs
     }
