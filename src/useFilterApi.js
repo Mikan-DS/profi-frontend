@@ -110,6 +110,7 @@ export default function useFilterApi({profi}){
         updateOperation,
         updateValue,
         addParameter,
-        deleteParameter
+        deleteParameter,
+        filterFound
     }
 }
