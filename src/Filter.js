@@ -1,8 +1,12 @@
 import {useState} from "react";
+import useFilterApi from "./useFilterApi";
 
 export default function Filter({profi}){
 
     const [filterToggle, setFilterToggle] = useState(false)
+
+    const filterApi = useFilterApi({profi})
+
     function toggleFilter() {
         setFilterToggle(!filterToggle)
     }

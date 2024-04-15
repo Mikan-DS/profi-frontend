@@ -18,9 +18,29 @@ export default function useProfi(){
         accentColor: "#FFFFFF"
     }
 
+
+    async function ApiRequest({path, data}) {
+        try {
+            const response = await fetch(configs.backend_url + "API/" + path, {
+                method: 'POST',
+                // headers: {
+                //     'Content-Type': 'application/json'
+                // },
+                // body: JSON.stringify(data)
+            });
+            return await response.json();
+        } catch (error) {
+            console.error(error);
+            return {message: error, unsuccess: true}
+        }
+    }
+
+
     return {
         configs,
-        colors
+        colors,
+
+        ApiRequest
     }
 
 }
