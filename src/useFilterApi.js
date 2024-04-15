@@ -27,7 +27,7 @@ export default function useFilterApi({profi}){
                     setVerboseName(filtersData.configs.verbose);
                     setVerboseNamePlural(filtersData.configs.verbose_plural);
 
-                    filtersData.configs.fields.forEach(function(field) {
+                    filtersData.configs.fields.forEach((field) => {
                         field.selected = true;
                         fields.push(field);
                     });
@@ -101,6 +101,11 @@ export default function useFilterApi({profi}){
         }
     }
 
+    function toggleFieldSelection(field) {
+        field.selected = !field.selected;
+        setFields([...fields])
+    }
+
 
     return {
         fields,
@@ -111,6 +116,7 @@ export default function useFilterApi({profi}){
         updateValue,
         addParameter,
         deleteParameter,
-        filterFound
+        filterFound,
+        toggleFieldSelection
     }
 }

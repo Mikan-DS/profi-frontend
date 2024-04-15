@@ -139,7 +139,18 @@ export default function Filter({profi}){
 
                             </div>
                             <div style={rightContainerStyle}>
-                                HUEST
+                                {filterApi.fields.map((field, index) => (
+                                    <div key={index}>
+                                        <input
+                                            type="checkbox"
+                                            checked={field.selected}
+                                            onChange={() => {
+                                                filterApi.toggleFieldSelection(field)
+                                            }}
+                                        />
+                                        <label>{field.verbose}</label>
+                                    </div>
+                                ))}
                             </div>
                         </div>
                         : null}
