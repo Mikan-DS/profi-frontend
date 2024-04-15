@@ -66,95 +66,103 @@ export default function Filter({profi}){
 
         {
             filterApi.filterFound ?
-                <div className="filter-container" style={filterContainerStyle}>
-                    <div className="switch" style={switchStyle} onClick={toggleFilter}>
-                <span>
-                    Фильтры
-                </span>
-                    </div>
-                    {filterToggle ?
-                        <div className="filter-settings" style={settingsStyle}>
-                            <div style={leftContainerStyle}>
-                                <select onChange={(event) => {
-                                    addFilter(event)
-                                }}>
-                                    <option key="Filter_Null" value="">Добавить фильтр</option>
-                                    {
-                                        filterApi.fields.map((field) => (
-                                            <option
-                                                key={"Filter_" + field.name}
-                                                value={field.name}>
-                                                {field.verbose}
-                                            </option>
-                                        ))
-                                    }
-                                </select>
-
-                                {Object.keys(filterApi.activeFilters).map((filter) => (
-                                    <div style={filterStyle} key={filter}>
-                                        {filterApi.activeFilters[filter].field.verbose}:
-                                        <br/>
+                <div>
+                    <div className="filter-container" style={filterContainerStyle}>
+                        <div className="switch" style={switchStyle} onClick={toggleFilter}>
+                            Фильтры
+                        </div>
+                        {filterToggle ?
+                            <div className="filter-settings" style={settingsStyle}>
+                                <div style={leftContainerStyle}>
+                                    <select onChange={(event) => {
+                                        addFilter(event)
+                                    }}>
+                                        <option key="Filter_Null" value="">Добавить фильтр</option>
                                         {
-                                            filterApi.allowedOperations[filterApi.activeFilters[filter].field.type_id].length !== 0 ?
+                                            filterApi.fields.map((field) => (
+                                                <option
+                                                    key={"Filter_" + field.name}
+                                                    value={field.name}>
+                                                    {field.verbose}
+                                                </option>
+                                            ))
+                                        }
+                                    </select>
 
-                                                <button onClick={() => {
-                                                    filterApi.addParameter(filter)
-                                                }}>Добавить</button> :
-                                                <span>
+                                    {Object.keys(filterApi.activeFilters).map((filter) => (
+                                        <div style={filterStyle} key={filter}>
+                                            {filterApi.activeFilters[filter].field.verbose}:
+                                            <br/>
+                                            {
+                                                filterApi.allowedOperations[filterApi.activeFilters[filter].field.type_id].length !== 0 ?
+
+                                                    <button onClick={() => {
+                                                        filterApi.addParameter(filter)
+                                                    }}>Добавить</button> :
+                                                    <span>
                                         Для этого поля невозможно создать фильтры
                                     </span>
-                                        }
-                                        <br/>
+                                            }
+                                            <br/>
 
 
-                                        {filterApi.activeFilters[filter].params.map((param, index) => (
-                                            <div key={index}>
-                                                <button onClick={() => {
-                                                    filterApi.deleteParameter({name: filter, index})
-                                                }}>
-                                                    X
-                                                </button>
-                                                <select
-                                                    value={param.operator}
-                                                    onChange={(e) => {
-                                                        filterApi.updateOperation({e, filter, index})
-                                                    }}
-                                                >
-                                                    {filterApi.allowedOperations[filterApi.activeFilters[filter].field.type_id].map((operation) => (
-                                                        <option value={operation}>{operation}</option>
-                                                    ))}
-                                                </select>
-                                                <input
-                                                    type="text"
-                                                    value={param.value}
-                                                    onChange={(e) => {
-                                                        filterApi.updateValue({e, filter, index})
-                                                    }}
-                                                />
-                                            </div>
-                                        ))}
+                                            {filterApi.activeFilters[filter].params.map((param, index) => (
+                                                <div key={index}>
+                                                    <button onClick={() => {
+                                                        filterApi.deleteParameter({name: filter, index})
+                                                    }}>
+                                                        X
+                                                    </button>
+                                                    <select
+                                                        value={param.operator}
+                                                        onChange={(e) => {
+                                                            filterApi.updateOperation({e, filter, index})
+                                                        }}
+                                                    >
+                                                        {filterApi.allowedOperations[filterApi.activeFilters[filter].field.type_id].map((operation) => (
+                                                            <option value={operation}>{operation}</option>
+                                                        ))}
+                                                    </select>
+                                                    <input
+                                                        type="text"
+                                                        value={param.value}
+                                                        onChange={(e) => {
+                                                            filterApi.updateValue({e, filter, index})
+                                                        }}
+                                                    />
+                                                </div>
+                                            ))}
 
-                                    </div>
-                                ))}
+                                        </div>
+                                    ))}
 
+                                </div>
+                                <div style={rightContainerStyle}>
+                                    {filterApi.fields.map((field, index) => (
+                                        <div key={index}>
+                                            <input
+                                                type="checkbox"
+                                                checked={field.selected}
+                                                onChange={() => {
+                                                    filterApi.toggleFieldSelection(field)
+                                                }}
+                                            />
+                                            <label>{field.verbose}</label>
+                                        </div>
+                                    ))}
+                                </div>
                             </div>
-                            <div style={rightContainerStyle}>
-                                {filterApi.fields.map((field, index) => (
-                                    <div key={index}>
-                                        <input
-                                            type="checkbox"
-                                            checked={field.selected}
-                                            onChange={() => {
-                                                filterApi.toggleFieldSelection(field)
-                                            }}
-                                        />
-                                        <label>{field.verbose}</label>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-                        : null}
+                            : null}
+                    </div>
+
+                    <br/>
+
+                    <button>
+                        Показать
+                    </button>
+
                 </div>
+
                 :
                 <span>
                     Фильтр не найден!
