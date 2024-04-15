@@ -13,6 +13,9 @@ export default function useFilterApi({profi}){
     const [verboseNamePlural, setVerboseNamePlural] = useState("");
     const [fields, setFields] = useState([])
 
+    const [activeFilters, setActiveFilters] = useState({})
+    const [allowedOperations, setAllowedOperations] = useState([])
+
     useEffect(() => {
         async function fetchFilter(){
             if (!filterFound && !oneRequest){
@@ -28,6 +31,10 @@ export default function useFilterApi({profi}){
                         field.selected = true;
                         fields.push(field);
                     });
+
+                    setAllowedOperations(
+                        [[], ...filtersData.configs.allowed_operations]
+                    )
 
                     document.title = "Фильтр: "+filtersData.configs.verbose_plural
 
@@ -53,8 +60,56 @@ export default function useFilterApi({profi}){
         return filterNamePart;
     }
 
+    function addFilter(name) {
+        if (!activeFilters[name]) {
+            setActiveFilters({
+                ...activeFilters,
+                [name]: {params: [], field: fields.find(field => field.name === name)}
+            })
+        }
+    }
+
+    function addParameter(name) {
+        const activeFilter = activeFilters[name];
+        if (activeFilter && allowedOperations[activeFilter.field.type_id].length != 0) {
+            activeFilter.params.push(
+                {
+                    operator: allowedOperations[activeFilter.field.type_id][0],
+                    value: ""
+                }
+            );
+        }
+        setActiveFilters({...activeFilters});
+    }
+
+    function updateOperation({e, filter, index}) {
+        activeFilters[filter].params[index].operator = e.target.value;
+        setActiveFilters({...activeFilters});
+
+    }
+    function updateValue({e, filter, index}) {
+        activeFilters[filter].params[index].value = e.target.value;
+        setActiveFilters({...activeFilters});
+    }
+
+
+    function deleteParameter({name, index}) {
+        const activeFilter = activeFilters[name];
+        if (activeFilter) {
+            activeFilter.params.splice(index, 1);
+            setActiveFilters({...activeFilters});
+        }
+    }
+
 
     return {
-
+        fields,
+        addFilter,
+        activeFilters,
+        allowedOperations,
+        updateOperation,
+        updateValue,
+        addParameter,
+        deleteParameter
     }
 }
