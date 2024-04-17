@@ -1,5 +1,6 @@
 import {useState} from "react";
 import useFilterApi from "./useFilterApi";
+import StyledButton from "./StyledButton";
 
 export default function Filter({profi}){
 
@@ -61,6 +62,30 @@ export default function Filter({profi}){
         borderTop: '1px solid '+profi.colors.accentColor,
         padding: 3,
     };
+
+    const tableStyle = {
+        backgroundColor: profi.colors.secondaryColor,
+        color: profi.colors.accentColor,
+        border: `1px solid ${profi.colors.accentColor}`,
+        borderCollapse: 'collapse'
+    }
+
+    const tableHeaderStyle = {
+        backgroundColor: profi.colors.accentColor,
+        color: profi.colors.primaryColor
+    }
+
+    const tableCellStyle = {
+        border: `1px solid ${profi.colors.accentColor}`,
+        padding: 4,
+        textAlign: 'center'
+    }
+    const tableHeaderCellStyle = {
+        borderLeft: `1px solid ${profi.colors.primaryColor}`,
+        borderRight: `1px solid ${profi.colors.primaryColor}`,
+        padding: 4,
+        textAlign: 'center'
+    }
 
 
     return <div className="Filter">
@@ -158,15 +183,18 @@ export default function Filter({profi}){
 
                     <br/>
 
-                    <button onClick={filterApi.fetchValues}>
-                        Показать
-                    </button>
 
-                    <table>
+                    <StyledButton profi={profi} onClick={filterApi.fetchValues}>
+                        Показать
+                    </StyledButton>
+
+                    <br style={{height:20}}/>
+
+                    <table style={tableStyle}>
                         <thead>
-                        <tr>
+                        <tr style={tableHeaderStyle}>
                             {filterApi.columns.map((column, index) => (
-                                <th key={index}>{column.verbose}</th>
+                                <th key={index} style={tableHeaderCellStyle}>{column.verbose}</th>
                             ))}
                         </tr>
                         </thead>
@@ -174,7 +202,7 @@ export default function Filter({profi}){
                         {filterApi.rows.map((row, index) => (
                             <tr key={index}>
                                 {filterApi.columns.map((column, columnIndex) => (
-                                    <td key={columnIndex}>{row[column.name]}</td>
+                                    <td key={columnIndex} style={tableCellStyle}>{row[column.name]}</td>
                                 ))}
                             </tr>
                         ))}
