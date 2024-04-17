@@ -23,10 +23,10 @@ export default function useProfi(){
         try {
             const response = await fetch(configs.backend_url + "API/" + path, {
                 method: 'POST',
-                // headers: {
-                //     'Content-Type': 'application/json'
-                // },
-                // body: JSON.stringify(data)
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
             });
             return await response.json();
         } catch (error) {

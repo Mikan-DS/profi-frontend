@@ -62,6 +62,7 @@ export default function Filter({profi}){
         padding: 3,
     };
 
+
     return <div className="Filter">
 
         {
@@ -157,9 +158,28 @@ export default function Filter({profi}){
 
                     <br/>
 
-                    <button>
+                    <button onClick={filterApi.fetchValues}>
                         Показать
                     </button>
+
+                    <table>
+                        <thead>
+                        <tr>
+                            {filterApi.columns.map((column, index) => (
+                                <th key={index}>{column.verbose}</th>
+                            ))}
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {filterApi.rows.map((row, index) => (
+                            <tr key={index}>
+                                {filterApi.columns.map((column, columnIndex) => (
+                                    <td key={columnIndex}>{row[column.name]}</td>
+                                ))}
+                            </tr>
+                        ))}
+                        </tbody>
+                    </table>
 
                 </div>
 

@@ -15,6 +15,8 @@ export default function useFilterApi({profi}){
 
     const [activeFilters, setActiveFilters] = useState({})
     const [allowedOperations, setAllowedOperations] = useState([])
+    const [rows, setRows] = useState([])
+    const [columns, setColumns] = useState([])
 
     useEffect(() => {
         async function fetchFilter(){
@@ -38,7 +40,8 @@ export default function useFilterApi({profi}){
 
                     document.title = "Фильтр: "+filtersData.configs.verbose_plural
 
-                    setFields([...fields])
+                    setFields([...fields]);
+                    await fetchValues()
 
                 }
 
@@ -107,6 +110,34 @@ export default function useFilterApi({profi}){
     }
 
 
+    async function fetchValues(){
+        if (filterFound){
+
+            const choosenColumns = fields.filter((filter) => filter.selected)
+
+            const payload = {
+                ignoreColumns:
+                    fields.filter((filter) => !filter.selected).map((filter) => filter.name)
+
+            }
+
+
+            const filtersData = await profi.ApiRequest({path: "filter/"+filterName, data:payload});
+
+            if (!filtersData.unsuccess && filtersData.values){
+
+                setRows([
+                    ...filtersData.values
+                ])
+                setColumns(choosenColumns)
+
+
+            }
+
+
+        }
+    }
+
     return {
         fields,
         addFilter,
@@ -117,6 +148,9 @@ export default function useFilterApi({profi}){
         addParameter,
         deleteParameter,
         filterFound,
-        toggleFieldSelection
+        toggleFieldSelection,
+        fetchValues,
+        rows,
+        columns
     }
 }
